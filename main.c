@@ -67,10 +67,10 @@ ioline_t ledRows[NUM_ROW * 3] = {
 #define LEN(a) (sizeof(a)/sizeof(*a))
 
 // An array of basic colors used accross different lighting profiles
-static const uint16_t colorPalette[] = {0xF00, 0xFF0, 0x0F0, 0x0FF, 0x00F, 0xF0F, 0x5FF};
+static const uint16_t colorPalette[] = {0xB00, 0xBB0, 0x0B0, 0x0BB, 0x00B, 0xB0B, 0x5BB};
 
 // The total number of lighting profiles. Each color in the color palette is a static profile of its own + custom ones 
-static const uint16_t NUM_LIGHTING_PROFILES = LEN(colorPalette) + 4;
+static const uint16_t NUM_LIGHTING_PROFILES = LEN(colorPalette) + 5;
 
 // Indicates the ID of the current lighting profile
 static uint16_t lightingProfile = 0;
@@ -146,12 +146,18 @@ THD_FUNCTION(Thread1, arg) {
 
             // Miami Nights Profile
             case LEN(colorPalette) + 2:
-              setAllKeysColor(ledColors, 0x0FF);
-              setModKeysColor(ledColors, 0xF0F);
+              setAllKeysColor(ledColors, 0x0BB);
+              setModKeysColor(ledColors, 0xB0B);
+              break;
+
+            // WASD RED
+            case LEN(colorPalette) + 3:
+              setAllKeysColor(ledColors, 0x000); //off all
+              setWasdKeysColor(ledColors, 0xB00); // red
               break;
 
             // Animated Rainbow
-            case LEN(colorPalette) + 3:
+            case LEN(colorPalette) + 4:
               for (uint16_t i=0; i<NUM_COLUMN; ++i){
                 for (uint16_t j=0; j<NUM_ROW; ++j){
                   ledColors[j*NUM_COLUMN+i] = colorPalette[i%LEN(colorPalette)];
