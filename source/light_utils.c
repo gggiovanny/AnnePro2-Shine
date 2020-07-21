@@ -49,6 +49,8 @@ static const uint16_t modKeyIDs[] = {0, 13, 14, 28, 40, 41, 42, 54, 55, 56, 57, 
 // Array with WASD keys IDs
 static const uint16_t wasdKeyIDs[] = {16, 29, 30, 31};
 
+// Array with numbers keys IDs
+static const uint16_t numKeyIDs[] = {1,2,3,4,5,6,7,8,9,10};
 
 /*
     Function declarations
@@ -72,5 +74,12 @@ void setModKeysColor(uint16_t* ledColors, uint16_t color){
 void setWasdKeysColor(uint16_t* ledColors, uint16_t color){
     for (uint16_t i=0; i<LEN(wasdKeyIDs); ++i){
         ledColors[wasdKeyIDs[i]] = color;
+    }
+}
+
+// Set number keys lighting to a specific color
+void setNumbersColor(uint16_t* ledColors, uint16_t color){
+    for (uint16_t i=0; i<LEN(numKeyIDs); ++i){
+        ledColors[numKeyIDs[i]] = color;
     }
 }

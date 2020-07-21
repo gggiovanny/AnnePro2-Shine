@@ -75,6 +75,9 @@ static const uint16_t NUM_LIGHTING_PROFILES = LEN(colorPalette) + 5;
 // Indicates the ID of the current lighting profile
 static uint16_t lightingProfile = 0;
 
+// Indicates if the keyboard as leds ON or OFF
+static bool ledsON = true;
+
 // Column offset for rainbow animation
 static uint16_t colAnimOffset = 0;
 
@@ -171,10 +174,12 @@ THD_FUNCTION(Thread1, arg) {
           }
           palSetLine(LINE_LED_PWR);
           lightingProfile = (lightingProfile+1)%NUM_LIGHTING_PROFILES;
+          ledsON = true;
           break;
         case CMD_LED_OFF:
           lightingProfile = (lightingProfile+LEN(colorPalette)-1)%LEN(colorPalette);
           palClearLine(LINE_LED_PWR);
+          ledsON = false;
           break;
         case CMD_LED_SET:
           bytesRead = sdReadTimeout(&SD1, commandBuffer, 4, 10000);
@@ -192,6 +197,22 @@ THD_FUNCTION(Thread1, arg) {
           if (commandBuffer[0] >= NUM_ROW)
             continue;
           memcpy(&ledColors[commandBuffer[0] * NUM_COLUMN],&commandBuffer[1], sizeof(uint16_t) * NUM_COLUMN);
+          break;
+        case CMD_LAYER_ON:
+          if(ledsON) {
+            bytesRead = sdReadTimeout(&SD1, commandBuffer, 4, 10000);
+            if (bytesRead < 4)
+              continue;
+            if (commandBuffer[0] < 1 || commandBuffer[0] > 10)
+              continue;
+            // lighting the num led indicated in the message
+            ledColors[commandBuffer[0]] = 0x0B0;
+          }
+          break;
+        case CMD_LAYER_OFF:
+          if(ledsON) {
+            setNumbersColor(ledColors, 0x000);
+          }
           break;
         default:
           break;
