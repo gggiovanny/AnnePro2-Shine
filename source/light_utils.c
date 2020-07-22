@@ -52,6 +52,8 @@ static const uint16_t wasdKeyIDs[] = {16, 29, 30, 31};
 // Array with numbers keys IDs
 static const uint16_t numKeyIDs[] = {1,2,3,4,5,6,7,8,9,10};
 
+static uint16_t numLightsState[10] = { 1000 };
+
 /*
     Function declarations
 */
@@ -81,5 +83,30 @@ void setWasdKeysColor(uint16_t* ledColors, uint16_t color){
 void setNumbersColor(uint16_t* ledColors, uint16_t color){
     for (uint16_t i=0; i<LEN(numKeyIDs); ++i){
         ledColors[numKeyIDs[i]] = color;
+    }
+}
+
+void saveNumLightsState(uint16_t* ledColors) {
+    uint16_t j = 0;
+    for (uint16_t i=1; i<=10; ++i){
+        numLightsState[j] = ledColors[i];
+        ++j;
+    }
+}
+
+void restoreNumLightsState(uint16_t* ledColors) {
+    // is not seted, do nothing
+    if(numLightsState[0] == 1000) return;
+
+    uint16_t j = 0;
+    for (uint16_t i=1; i<=10; ++i){
+        ledColors[i] = numLightsState[j];
+        ++j;
+    }
+}
+
+void resetNumLightsState(void) {
+    for (uint16_t i=0; i<LEN(numLightsState); ++i){
+        numLightsState[i] = 1000;
     }
 }

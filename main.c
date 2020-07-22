@@ -175,6 +175,7 @@ THD_FUNCTION(Thread1, arg) {
           palSetLine(LINE_LED_PWR);
           lightingProfile = (lightingProfile+1)%NUM_LIGHTING_PROFILES;
           ledsON = true;
+          resetNumLightsState();
           break;
         case CMD_LED_OFF:
           lightingProfile = (lightingProfile+LEN(colorPalette)-1)%LEN(colorPalette);
@@ -206,12 +207,14 @@ THD_FUNCTION(Thread1, arg) {
             if (commandBuffer[0] < 1 || commandBuffer[0] > 10)
               continue;
             // lighting the num led indicated in the message
+            restoreNumLightsState(ledColors);
+            saveNumLightsState(ledColors);
             ledColors[commandBuffer[0]] = 0x0B0;
           }
           break;
         case CMD_LAYER_OFF:
           if(ledsON) {
-            setNumbersColor(ledColors, 0x000);
+            restoreNumLightsState(ledColors);
           }
           break;
         default:
