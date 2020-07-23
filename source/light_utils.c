@@ -166,3 +166,39 @@ void applyEffectAllKeys(uint16_t* ledColors, uint16_t (*effect)(uint16_t)){
         ledColors[i] = effect(ledColors[i]);
     }
 }
+
+uint16_t brightUpColor(uint16_t color) {
+    float correctionFactor = 0.1;
+    uint16_t* rgb = splitColor(color);
+    bool all_parts_increased = true;
+    for(uint16_t i = 0; i<3; ++i) {
+        rgb[i] = (uint16_t)((255 - rgb[i]) * correctionFactor + rgb[i]);
+        if(rgb[i] > 0xF) {
+            all_parts_increased = false;
+            break;
+        }
+    }
+    if(all_parts_increased)
+        return joinColor(rgb);
+    else 
+        return color;
+}
+
+uint16_t brightDownColor(uint16_t color) {
+    float correctionFactor = 0.9;
+    uint16_t* rgb = splitColor(color);
+    bool all_parts_decreased = true;
+    for(uint16_t i = 0; i<3; ++i) {
+        rgb[i] = (uint16_t)(rgb[i] * correctionFactor);
+        if(rgb[i] < 0x1) {
+            all_parts_decreased = false;
+            break;
+        }
+    }
+    if(all_parts_decreased)
+        return joinColor(rgb);
+    else 
+        return color;
+}
+
+// brightUpColor() and brightDownColor() are adaptations of Pavel Vladov C# implementation, credits to him (https://www.pvladov.com/2012/09/make-color-lighter-or-darker.html)
