@@ -219,12 +219,12 @@ THD_FUNCTION(Thread1, arg) {
           break;
         case CMD_BRIGHT_UP:
           if(ledsON) {
-            brightUpAllKeys(ledColors);
+            saturateUpAllKeys(ledColors);
           }
           break;
         case CMD_BRIGHT_DOWN:
           if(ledsON) {
-            brightDownAllKeys(ledColors);
+            saturateDownAllKeys(ledColors);
           }
           break;
         default:

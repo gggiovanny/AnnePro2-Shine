@@ -15,5 +15,5 @@ uint16_t* splitColor(uint16_t color);
 uint16_t joinColor(uint16_t rgb[]);
 uint16_t brigtUpColor(uint16_t color);
 uint16_t brigtDownColor(uint16_t color);
-void brightUpAllKeys(uint16_t* ledColors);
-void brightDownAllKeys(uint16_t* ledColors);
+void saturateUpAllKeys(uint16_t* ledColors);
+void saturateDownAllKeys(uint16_t* ledColors);

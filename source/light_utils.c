@@ -160,13 +160,14 @@ uint16_t brigtDownColor(uint16_t color) {
         return color;
 }
 
-void brightUpAllKeys(uint16_t* ledColors){
+void saturateUpAllKeys(uint16_t* ledColors){
     for (uint16_t i=0; i<NUM_COLUMN * NUM_ROW; ++i){
+        if(ledColors[i] = 0) continue; // turned off leds doesnt get affected
         ledColors[i] = brigtUpColor(ledColors[i]);
     }
 }
 
-void brightDownAllKeys(uint16_t* ledColors){
+void saturateDownAllKeys(uint16_t* ledColors){
     for (uint16_t i=0; i<NUM_COLUMN * NUM_ROW; ++i){
         ledColors[i] = brigtDownColor(ledColors[i]);
     }
