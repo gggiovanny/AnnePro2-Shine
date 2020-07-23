@@ -160,15 +160,9 @@ uint16_t saturateDownColor(uint16_t color) {
         return color;
 }
 
-void saturateUpAllKeys(uint16_t* ledColors){
+void applyEffectAllKeys(uint16_t* ledColors, uint16_t (*effect)(uint16_t)){
     for (uint16_t i=0; i<NUM_COLUMN * NUM_ROW; ++i){
         if(ledColors[i] == 0) continue; // turned off leds doesnt get affected
-        ledColors[i] = saturateUpColor(ledColors[i]);
-    }
-}
-
-void saturateDownAllKeys(uint16_t* ledColors){
-    for (uint16_t i=0; i<NUM_COLUMN * NUM_ROW; ++i){
-        ledColors[i] = saturateDownColor(ledColors[i]);
+        ledColors[i] = effect(ledColors[i]);
     }
 }
