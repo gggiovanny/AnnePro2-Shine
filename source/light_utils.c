@@ -172,7 +172,7 @@ uint16_t brightUpColor(uint16_t color) {
     uint16_t* rgb = splitColor(color);
     bool all_parts_increased = true;
     for(uint16_t i = 0; i<3; ++i) {
-        rgb[i] = (uint16_t)((255 - rgb[i]) * correctionFactor + rgb[i]);
+        rgb[i] = (uint16_t)((15 - rgb[i]) * correctionFactor + rgb[i]);
         if(rgb[i] > 0xF) {
             all_parts_increased = false;
             break;
