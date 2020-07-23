@@ -126,7 +126,7 @@ uint16_t joinColor(uint16_t rgb[]) {
     return color;
 }
 
-uint16_t brigtUpColor(uint16_t color) {
+uint16_t saturateUpColor(uint16_t color) {
     uint16_t* rgb = splitColor(color);
 
     bool all_parts_increased = true;
@@ -143,7 +143,7 @@ uint16_t brigtUpColor(uint16_t color) {
         return color;
 }
 
-uint16_t brigtDownColor(uint16_t color) {
+uint16_t saturateDownColor(uint16_t color) {
     uint16_t* rgb = splitColor(color);
 
     bool all_parts_decreased = true;
@@ -162,13 +162,13 @@ uint16_t brigtDownColor(uint16_t color) {
 
 void saturateUpAllKeys(uint16_t* ledColors){
     for (uint16_t i=0; i<NUM_COLUMN * NUM_ROW; ++i){
-        if(ledColors[i] = 0) continue; // turned off leds doesnt get affected
-        ledColors[i] = brigtUpColor(ledColors[i]);
+        if(ledColors[i] == 0) continue; // turned off leds doesnt get affected
+        ledColors[i] = saturateUpColor(ledColors[i]);
     }
 }
 
 void saturateDownAllKeys(uint16_t* ledColors){
     for (uint16_t i=0; i<NUM_COLUMN * NUM_ROW; ++i){
-        ledColors[i] = brigtDownColor(ledColors[i]);
+        ledColors[i] = saturateDownColor(ledColors[i]);
     }
 }
