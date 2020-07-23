@@ -14,9 +14,6 @@
     Static Declarations
 */
 
-// An array of basic colors used accross different lighting profiles
-static const uint16_t colorPalette[] = {0xB00, 0xBB0, 0x0B0, 0x0BB, 0x00B, 0xB0B, 0x5BB};
-
 /*
 * ,-----------------------------------------------------------------------------------------.
 * |  0  |     |     |     |     |     |     |     |     |     |     |     |     |    13     |
@@ -52,7 +49,7 @@ static const uint16_t wasdKeyIDs[] = {16, 29, 30, 31};
 // Array with numbers keys IDs
 static const uint16_t numKeyIDs[] = {1,2,3,4,5,6,7,8,9,10};
 
-static uint16_t numLightsState[10] = { 1000 };
+static uint16_t numLightsState[10] = { 0x1000 };
 
 /*
     Function declarations
@@ -119,4 +116,31 @@ uint16_t* splitColor(uint16_t color) {
     rgb[1] = (color >> 4) - (rgb[2] << 4); // 1
     rgb[0] = color - ((color >> 4) << 4); // 3
     return rgb;
+}
+uint16_t joinColor(uint16_t rgb[]) {
+    rgb[2] = rgb[2] << 8;
+    rgb[1] = rgb[1] << 4;
+    uint16_t color = 0;
+    for(uint16_t i = 0; i<3; ++i) {
+        color += rgb[i];
+    }
+    return color;
+}
+
+
+uint16_t brigtUpColor(uint16_t color) {
+    uint16_t* rgb = splitColor(color);
+
+    bool all_parts_increased = true;
+    for(uint16_t i = 0; i<3; ++i) {
+        if(rgb[i] >= 0xF) {
+            all_parts_increased = false;
+            break;
+        }
+        rgb[i] += 1;
+    }
+    if(all_parts_increased)
+        return joinColor(rgb);
+    else 
+        return color;
 }
