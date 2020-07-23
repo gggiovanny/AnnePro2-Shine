@@ -14,3 +14,4 @@ void resetNumLightsState(void);
 uint16_t* splitColor(uint16_t color);
 uint16_t joinColor(uint16_t rgb[]);
 uint16_t brigtUpColor(uint16_t color);
+uint16_t brigtDownColor(uint16_t color);

@@ -127,7 +127,6 @@ uint16_t joinColor(uint16_t rgb[]) {
     return color;
 }
 
-
 uint16_t brigtUpColor(uint16_t color) {
     uint16_t* rgb = splitColor(color);
 
@@ -140,6 +139,23 @@ uint16_t brigtUpColor(uint16_t color) {
         rgb[i] += 1;
     }
     if(all_parts_increased)
+        return joinColor(rgb);
+    else 
+        return color;
+}
+
+uint16_t brigtDownColor(uint16_t color) {
+    uint16_t* rgb = splitColor(color);
+
+    bool all_parts_decreased = true;
+    for(uint16_t i = 0; i<3; ++i) {
+        if(rgb[i] <= 0x0) {
+            all_parts_decreased = false;
+            break;
+        }
+        rgb[i] -= 1;
+    }
+    if(all_parts_decreased)
         return joinColor(rgb);
     else 
         return color;
