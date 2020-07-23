@@ -149,7 +149,7 @@ uint16_t brigtDownColor(uint16_t color) {
 
     bool all_parts_decreased = true;
     for(uint16_t i = 0; i<3; ++i) {
-        if(rgb[i] <= 0x0) {
+        if(rgb[i] <= 0x1) {
             all_parts_decreased = false;
             break;
         }
@@ -159,4 +159,16 @@ uint16_t brigtDownColor(uint16_t color) {
         return joinColor(rgb);
     else 
         return color;
+}
+
+void brightUpAllKeys(uint16_t* ledColors){
+    for (uint16_t i=0; i<NUM_COLUMN * NUM_ROW; ++i){
+        ledColors[i] = 0x00B;
+    }
+}
+
+void brightDownAllKeys(uint16_t* ledColors){
+    for (uint16_t i=0; i<NUM_COLUMN * NUM_ROW; ++i){
+        ledColors[i] = brigtDownColor(ledColors[i]);
+    }
 }
