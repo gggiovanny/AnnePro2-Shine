@@ -220,13 +220,11 @@ THD_FUNCTION(Thread1, arg) {
         case CMD_BRIGHT_UP:
           if(ledsON) {
             brightUpAllKeys(ledColors);
-            palSetLine(LINE_LED_PWR);
           }
           break;
         case CMD_BRIGHT_DOWN:
           if(ledsON) {
             brightDownAllKeys(ledColors);
-            palSetLine(LINE_LED_PWR);
           }
           break;
         default:

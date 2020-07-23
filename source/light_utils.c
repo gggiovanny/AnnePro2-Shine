@@ -118,12 +118,11 @@ uint16_t* splitColor(uint16_t color) {
     return rgb;
 }
 uint16_t joinColor(uint16_t rgb[]) {
-    rgb[2] = rgb[2] << 8;
-    rgb[1] = rgb[1] << 4;
-    uint16_t color = 0;
-    for(uint16_t i = 0; i<3; ++i) {
-        color += rgb[i];
-    }
+    uint16_t x3 = rgb[2];
+    uint16_t x2 = rgb[1];
+    uint16_t x300 = x3 << 8;
+    uint16_t x20 = x2 << 4;
+    uint16_t color = x300 + x20 + rgb[0];
     return color;
 }
 
@@ -163,7 +162,7 @@ uint16_t brigtDownColor(uint16_t color) {
 
 void brightUpAllKeys(uint16_t* ledColors){
     for (uint16_t i=0; i<NUM_COLUMN * NUM_ROW; ++i){
-        ledColors[i] = 0x00B;
+        ledColors[i] = brigtUpColor(ledColors[i]);
     }
 }
 
