@@ -110,3 +110,13 @@ void resetNumLightsState(void) {
         numLightsState[i] = 1000;
     }
 }
+
+uint16_t* splitColor(uint16_t color) {
+    static uint16_t rgb[3] = { 0xF };
+    if(color > 0xFFF) return rgb;
+    // int color = B13;
+    rgb[2] = color >> 8; // B
+    rgb[1] = (color >> 4) - (rgb[2] << 4); // 1
+    rgb[0] = color - ((color >> 4) << 4); // 3
+    return rgb;
+}

@@ -11,3 +11,4 @@ void setNumbersColor(uint16_t* ledColors, uint16_t color);
 void saveNumLightsState(uint16_t* ledColors);
 void restoreNumLightsState(uint16_t* ledColors);
 void resetNumLightsState(void);
+uint16_t* splitColor(uint16_t color);
