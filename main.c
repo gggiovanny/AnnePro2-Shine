@@ -67,10 +67,10 @@ ioline_t ledRows[NUM_ROW * 3] = {
 #define LEN(a) (sizeof(a)/sizeof(*a))
 
 // An array of basic colors used accross different lighting profiles
-static const uint16_t colorPalette[] = {0xB00, 0xBB0, 0x0B0, 0x0BB, 0x00B, 0xB0B, 0x5BB};
+static const uint16_t colorPalette[] = {0xB00, 0xBB0, 0x0B0, 0x0BB, 0x00B, 0xB0B, 0x5BB}; //7
 
 // The total number of lighting profiles. Each color in the color palette is a static profile of its own + custom ones 
-static const uint16_t NUM_LIGHTING_PROFILES = LEN(colorPalette) + 5;
+static const uint16_t NUM_LIGHTING_PROFILES = LEN(colorPalette) + 6;
 
 // Indicates the ID of the current lighting profile
 static uint16_t lightingProfile = 0;
@@ -117,7 +117,9 @@ THD_WORKING_AREA(waThread1, 128);
 THD_FUNCTION(Thread1, arg) {
 
   (void)arg;
-
+  // Set default to the wasd red profile
+  setAllKeysColor(ledColors, 0x000); //off all
+  setWasdKeysColor(ledColors, 0xB00); // red
   while (true)
   {
     msg_t msg;
@@ -167,6 +169,12 @@ THD_FUNCTION(Thread1, arg) {
                 }     
               }
               break;
+            
+            // Turn off
+            case LEN(colorPalette) + 5:
+              palClearLine(LINE_LED_PWR);
+              ledsON = false;
+            break;
 
             // Static Single Color Profiles
             default:
@@ -251,9 +259,9 @@ void animationCallback(GPTDriver* _driver){
   
   // Update lighting according to the current lighting profile
   switch(lightingProfile){
-    
+    const uint16_t colorPaletteBugAdjust = LEN(colorPalette) + 1;
     // Vertical Rainbow Profile
-    case 0:
+    case colorPaletteBugAdjust + 4:
       // Set refresh rate for this animation
       gptChangeInterval(_driver, ANIMATION_TIMER_FREQUENCY/5);
       // Update led colors
