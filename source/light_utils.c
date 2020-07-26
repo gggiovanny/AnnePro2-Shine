@@ -93,7 +93,7 @@ void saveNumLightsState(uint16_t* ledColors) {
 
 void restoreNumLightsState(uint16_t* ledColors) {
     // is not seted, do nothing
-    if(numLightsState[0] == 1000) return;
+    if(numLightsState[0] == 0x1000) return;
 
     uint16_t j = 0;
     for (uint16_t i=1; i<=10; ++i){
@@ -104,7 +104,7 @@ void restoreNumLightsState(uint16_t* ledColors) {
 
 void resetNumLightsState(void) {
     for (uint16_t i=0; i<LEN(numLightsState); ++i){
-        numLightsState[i] = 1000;
+        numLightsState[i] = 0x1000;
     }
 }
 
