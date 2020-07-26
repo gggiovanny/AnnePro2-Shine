@@ -118,8 +118,8 @@ THD_FUNCTION(Thread1, arg) {
 
   (void)arg;
   // Set default to the wasd red profile
-  setAllKeysColor(ledColors, 0x000); //off all
-  setWasdKeysColor(ledColors, 0xB00); // red
+  setAllKeysColor(ledColors, colorPalette[0]);
+  saveNumLightsState(ledColors);
   while (true)
   {
     msg_t msg;
@@ -215,9 +215,19 @@ THD_FUNCTION(Thread1, arg) {
             if (commandBuffer[0] < 1 || commandBuffer[0] > 10)
               continue;
             // lighting the num led indicated in the message
-            restoreNumLightsState(ledColors);
-            saveNumLightsState(ledColors);
-            ledColors[commandBuffer[0]] = 0x0B0;
+            switch (commandBuffer[0])
+            {
+              case 4:
+                setAllKeysColor(ledColors, 0x000); //off all
+                setWasdKeysColor(ledColors, 0xB00); // red
+                resetNumLightsState();
+                break;
+              default:
+                restoreNumLightsState(ledColors);
+                saveNumLightsState(ledColors);
+                ledColors[commandBuffer[0]] = 0x0B0;
+                break;
+            }
           }
           break;
         case CMD_LAYER_OFF:
