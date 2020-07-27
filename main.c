@@ -119,7 +119,7 @@ THD_FUNCTION(Thread1, arg) {
   (void)arg;
   // Set default to the wasd red profile
   setAllKeysColor(ledColors, colorPalette[0]);
-  saveNumLightsState(ledColors);
+  saveAllLightsState(ledColors);
   while (true)
   {
     msg_t msg;
@@ -177,7 +177,7 @@ THD_FUNCTION(Thread1, arg) {
           palSetLine(LINE_LED_PWR);
           lightingProfile = (lightingProfile+1)%NUM_LIGHTING_PROFILES;
           ledsON = true;
-          resetNumLightsState();
+          saveAllLightsState(ledColors);
           break;
         case CMD_LED_OFF:
           lightingProfile = (lightingProfile+LEN(colorPalette)-1)%LEN(colorPalette);
@@ -202,7 +202,7 @@ THD_FUNCTION(Thread1, arg) {
           memcpy(&ledColors[commandBuffer[0] * NUM_COLUMN],&commandBuffer[1], sizeof(uint16_t) * NUM_COLUMN);
           break;
         case CMD_LAYER_ON:
-          if(ledsON) {
+          if(ledsON) {  
             bytesRead = sdReadTimeout(&SD1, commandBuffer, 4, 10000);
             if (bytesRead < 4)
               continue;
@@ -211,14 +211,13 @@ THD_FUNCTION(Thread1, arg) {
             // lighting the num led indicated in the message
             switch (commandBuffer[0])
             {
+              restoreAllLightsState(ledColors);
+              saveAllLightsState(ledColors);
               case 4:
                 setAllKeysColor(ledColors, 0x000); //off all
                 setWasdKeysColor(ledColors, 0xB00); // red
-                resetNumLightsState();
                 break;
               default:
-                restoreNumLightsState(ledColors);
-                saveNumLightsState(ledColors);
                 ledColors[commandBuffer[0]] = 0x0B0;
                 break;
             }
@@ -226,7 +225,7 @@ THD_FUNCTION(Thread1, arg) {
           break;
         case CMD_LAYER_OFF:
           if(ledsON) {
-            restoreNumLightsState(ledColors);
+            restoreAllLightsState(ledColors);
           }
           break;
         case CMD_BRIGHT_UP:

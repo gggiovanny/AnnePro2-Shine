@@ -46,10 +46,15 @@ static const uint16_t modKeyIDs[] = {0, 13, 14, 28, 40, 41, 42, 54, 55, 56, 57, 
 // Array with WASD keys IDs
 static const uint16_t wasdKeyIDs[] = {16, 29, 30, 31};
 
-// Array with numbers keys IDs
-static const uint16_t numKeyIDs[] = {1,2,3,4,5,6,7,8,9,10};
-
 static uint16_t numLightsState[10] = { 0x1000 };
+
+static uint16_t allLightsState[NUM_COLUMN * NUM_ROW] = {
+  0x1000,0x1000,0x1000,0x1000,0x1000,0x1000,0x1000,0x1000,0x1000,0x1000,0x1000,0x1000,0x1000,0x1000,
+  0x1000,0x1000,0x1000,0x1000,0x1000,0x1000,0x1000,0x1000,0x1000,0x1000,0x1000,0x1000,0x1000,0x1000,
+  0x1000,0x1000,0x1000,0x1000,0x1000,0x1000,0x1000,0x1000,0x1000,0x1000,0x1000,0x1000,0x1000,0x1000,
+  0x1000,0x1000,0x1000,0x1000,0x1000,0x1000,0x1000,0x1000,0x1000,0x1000,0x1000,0x1000,0x1000,0x1000,
+  0x1000,0x1000,0x1000,0x1000,0x1000,0x1000,0x1000,0x1000,0x1000,0x1000,0x1000,0x1000,0x1000,0x1000,
+};
 
 /*
     Function declarations
@@ -76,35 +81,18 @@ void setWasdKeysColor(uint16_t* ledColors, uint16_t color){
     }
 }
 
-// Set number keys lighting to a specific color
-void setNumbersColor(uint16_t* ledColors, uint16_t color){
-    for (uint16_t i=0; i<LEN(numKeyIDs); ++i){
-        ledColors[numKeyIDs[i]] = color;
+void saveAllLightsState(uint16_t* ledColors) {
+    for (uint16_t i=0; i<NUM_COLUMN * NUM_ROW; ++i){
+        allLightsState[i] = ledColors[i];
     }
 }
 
-void saveNumLightsState(uint16_t* ledColors) {
-    uint16_t j = 0;
-    for (uint16_t i=1; i<=10; ++i){
-        numLightsState[j] = ledColors[i];
-        ++j;
-    }
-}
-
-void restoreNumLightsState(uint16_t* ledColors) {
+void restoreAllLightsState(uint16_t* ledColors) {
     // is not seted, do nothing
-    if(numLightsState[0] == 0x1000) return;
+    if(allLightsState[0] == 0x1000) return;
 
-    uint16_t j = 0;
-    for (uint16_t i=1; i<=10; ++i){
-        ledColors[i] = numLightsState[j];
-        ++j;
-    }
-}
-
-void resetNumLightsState(void) {
-    for (uint16_t i=0; i<LEN(numLightsState); ++i){
-        numLightsState[i] = 0x1000;
+    for (uint16_t i=0; i<NUM_COLUMN * NUM_ROW; ++i){
+        ledColors[i] = allLightsState[i];
     }
 }
 
